@@ -28,36 +28,70 @@ let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
 let genereMistery = () => {
-	let numberSupect = doRandom(suspectsArray);
+	let numberSuspect = doRandom(suspectsArray);
 
-	let mistery = `Mataron a ${suspectsArray[numberSupect].nombre} ${
-		suspectsArray[numberSupect].apellido
+	let listWithoutAsesin = suspectsArray.splice(numberSuspect, 1);
+
+	let numberDied = doRandom(listWithoutAsesin);
+
+	let caseMurder = [
+		`${listWithoutAsesin[numberDied].nombre} ${listWithoutAsesin[numberDied].apellido}`,
+		weaponsArray[doRandom(weaponsArray)],
+		roomsArray[doRandom(roomsArray)],
+		`${suspectsArray[numberSuspect].nombre} ${suspectsArray[numberSuspect].apellido}`,
+	];
+
+	return caseMurder;
+};
+
+let verifyMistery = () => {
+	let mistery = `Mataron a ${suspectsArray[numberSuspect].nombre} ${
+		suspectsArray[numberSuspect].apellido
 	} con la ${weaponsArray[doRandom(weaponsArray)]} y fue en la ${
 		roomsArray[doRandom(roomsArray)]
 	} 
 	 `;
-
-	return mistery;
 };
 
-let verifyMistery = () => {};
+let oportunities = [false, false, false, false];
 
-let mistery = [{ asesinFound: true }];
+let menu = (dead) => {
+	let coins = 0;
 
-let main = () => {
 	do {
 		switch (selectUser) {
 			case 0:
 				const OPCION = prompt(
-					`Bienvenido, seleccione una opción (ESC para salir)\n${
-						mistery[0].asesinFound == true
+					`Bienvenido a Clue the Office \n mataron a ${
+						dead[0]
+					} es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n 
+					${
+						oportunities[3] == true
 							? `Asesino adivinado`
-							: ` 1.-Adivinar el nombre del asesino`
-					}  \n2. Adivinar Arma \n3. Adivinar lugar \n4. Adivinar Asesinado   \n 5.- Para salir`
+							: `1.-Adivinar el nombre del asesino\n`
+					} ${
+						oportunities[2] == true ? `Arma adivinada` : `2. Adivinar Arma\n`
+					}${
+						oportunities[0] == true ? `Lugar adivinado` : `3. Adivinar Lugar\n`
+					} `
 				);
 
 			case 1:
-				alert();
+				do {
+					const intructions = prompt(
+						`Adivina el asesino seleciona su número\n
+					1.-${dead[0]}
+					2.-${dead[1]}
+					3.-${dead[2]}
+					`
+					);
+
+					for (const element in dead) {
+						element`${dead[element]}`;
+					}
+					coins++;
+				} while (coins < 5);
+
 				break;
 			case 2:
 				alert("2.-Adivina ");
@@ -67,8 +101,17 @@ let main = () => {
 				alert("Opción inválida");
 				break;
 		}
-	} while (option !== "s" || option !== "S");
+	} while (selectUser !== "s" || selectUser !== "S");
 };
 
-genereMistery();
+let main = () => {
+	let murder = genereMistery();
+
+	for (element in murder) {
+		console.log(`${murder[element]}`);
+	}
+
+	menu(murder);
+};
+
 main();
