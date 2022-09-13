@@ -128,27 +128,27 @@ let menu = (asseMurder) => {
 
 				console.log("numero asesino", asseMurder[0]);
 
-				debugger;
-
 				do {
 					optiAssesin = parseInt(prompt(`${instructions}`));
 					numberAssesin = parseInt(asseMurder[0]);
 
-					alert(`optiAssesin ${optiAssesin}`);
-					alert(`asseMurder= ${asseMurder[0]}`);
+					// alert(`optiAssesin ${optiAssesin}`);
+					// alert(`asseMurder= ${asseMurder[0]}`);
 
 					coins++;
-				} while (optiAssesin != numberAssesin || coins < 5);
+
+					// alert(`coins=${coins}`);
+				} while (optiAssesin !== numberAssesin && coins < 5);
 
 				if (optiAssesin === numberAssesin) {
 					alert(`Ganaste fue ${suspectsArray[asseMurder[0]].nombre}`);
 					selectUser = "s";
-				} else {
+				} else if (coins === 5) {
 					alert(`Perdiste fue ${suspectsArray[asseMurder[0]].nombre}`);
 					selectUser = "s";
 				}
 
-				alert(`selectUser=  ${selectUser}`);
+				// alert(`selectUser=  ${selectUser}`);
 
 				break;
 			case 2:
