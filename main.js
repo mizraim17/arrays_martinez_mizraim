@@ -27,43 +27,69 @@ const weaponsArray = [
 let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
-let genereMistery = () => {
-	let numberSuspect = doRandom(suspectsArray);
+let listWithoutAsesin = (numberAssesin) => {
+	alert("numberAssesin", numberAssesin);
 
-	let listWithoutAsesin = suspectsArray.splice(numberSuspect, 1);
+	newList = [];
+	suspectsArray.splice(numberAssesin, 1);
 
-	let numberDied = doRandom(listWithoutAsesin);
+	for (element in suspectsArray) {
+		newList[element] = suspectsArray[element];
 
-	let caseMurder = [
-		`${listWithoutAsesin[numberDied].nombre} ${listWithoutAsesin[numberDied].apellido}`,
-		weaponsArray[doRandom(weaponsArray)],
-		roomsArray[doRandom(roomsArray)],
-		`${suspectsArray[numberSuspect].nombre} ${suspectsArray[numberSuspect].apellido}`,
-	];
+		console.log(newList[element]);
+	}
 
-	return caseMurder;
+	return newList;
 };
 
-let verifyMistery = () => {
-	let mistery = `Mataron a ${suspectsArray[numberSuspect].nombre} ${
-		suspectsArray[numberSuspect].apellido
-	} con la ${weaponsArray[doRandom(weaponsArray)]} y fue en la ${
-		roomsArray[doRandom(roomsArray)]
-	} 
-	 `;
+let genereMistery = () => {
+	let asessinMuerdered = [];
+
+	let numberAssesin = parseInt(doRandom(suspectsArray));
+
+	let numberDied = doRandom(listWithoutAsesin(numberAssesin));
+
+	console.log("numberDied", numberDied);
+
+	asessinMuerdered.push(numberAssesin);
+	asessinMuerdered.push(numberDied);
+
+	return asessinMuerdered;
+};
+
+let verifyMistery = (asseMurde) => {
+	console.log("array asesinos", asseMurde[0]);
+
+	dataMurder = [
+		`${suspectsArray[asseMurde[0]].nombre} ${
+			suspectsArray[asseMurde[0]].apellido
+		}`,
+		`${suspectsArray[asseMurde[1]].nombre} ${
+			suspectsArray[asseMurde[1]].apellido
+		}`,
+
+		weaponsArray[doRandom(weaponsArray)],
+		roomsArray[doRandom(roomsArray)],
+	];
+
+	console.log("dataMurder", dataMurder);
+
+	return dataMurder;
 };
 
 let oportunities = [false, false, false, false];
 
-let menu = (dead) => {
+let menu = (asseMurde) => {
 	let coins = 0;
+
+	let fullCase = verifyMistery(asseMurde);
 
 	do {
 		switch (selectUser) {
 			case 0:
 				const OPCION = prompt(
-					`Bienvenido a Clue the Office \n mataron a ${
-						dead[0]
+					`Bienvenido a Clue the Office \n mataron a  ${
+						suspectsArray[parseInt(asseMurde[1])].nombre
 					} es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n 
 					${
 						oportunities[3] == true
@@ -77,18 +103,33 @@ let menu = (dead) => {
 				);
 
 			case 1:
+				const TXT_1 = "Adivina el asesino seleciona su número";
+				let instructions = "";
+				conter = 1;
+
+				listOpWiAss = listWithoutAsesin(parseInt(asseMurde[1]));
+
+				alert("listOpWiAss", listOpWiAss);
+
+				debugger;
+
+				for (element in listOpWiAss) {
+					instructions =
+						instructions +
+						`${conter}.- ${listOpWiAss[element].nombre} ${listOpWiAss[element].apellido} \n`;
+					conter++;
+				}
+
+				instructions + TXT_1;
+
+				console.log("instructions", instructions);
+
 				do {
 					const intructions = prompt(
-						`Adivina el asesino seleciona su número\n
-					1.-${dead[0]}
-					2.-${dead[1]}
-					3.-${dead[2]}
+						` ${instructions}
 					`
 					);
 
-					for (const element in dead) {
-						element`${dead[element]}`;
-					}
 					coins++;
 				} while (coins < 5);
 
@@ -105,13 +146,20 @@ let menu = (dead) => {
 };
 
 let main = () => {
-	let murder = genereMistery();
-
-	for (element in murder) {
-		console.log(`${murder[element]}`);
-	}
-
-	menu(murder);
+	let x = genereMistery();
+	menu(x);
 };
 
 main();
+
+// genereMistery();
+
+// console.log("->", suspectsArrayz.splice(4, 1));
+
+// let arrz = [];
+
+// for (element in suspectsArrayz) {
+// 	arrz[element] = suspectsArrayz[element];
+// }
+
+// console.log("===>", arrz);
