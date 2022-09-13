@@ -3,15 +3,15 @@
 let selectUser = 0;
 
 const suspectsArray = [
-	{ id: 1, nombre: "Michael", apellido: "Scott" },
-	{ id: 2, nombre: "Jim", apellido: "Halpert" },
-	{ id: 3, nombre: "Dwight", apellido: "Schrute" },
-	{ id: 4, nombre: "Pam", apellido: "Beesly" },
-	{ id: 5, nombre: "Ryan", apellido: "Howard" },
-	{ id: 6, nombre: "Oscar", apellido: "Martinez" },
-	{ id: 7, nombre: "Angela", apellido: "Martin" },
-	{ id: 8, nombre: "Andy", apellido: "Bernard" },
-	{ id: 9, nombre: "Kevin", apellido: "Malone" },
+	{ id: 0, nombre: "Michael", apellido: "Scott" },
+	{ id: 1, nombre: "Jim", apellido: "Halpert" },
+	{ id: 2, nombre: "Dwight", apellido: "Schrute" },
+	{ id: 3, nombre: "Pam", apellido: "Beesly" },
+	{ id: 4, nombre: "Ryan", apellido: "Howard" },
+	{ id: 5, nombre: "Oscar", apellido: "Martinez" },
+	{ id: 6, nombre: "Angela", apellido: "Martin" },
+	{ id: 7, nombre: "Andy", apellido: "Bernard" },
+	{ id: 8, nombre: "Kevin", apellido: "Malone" },
 ];
 
 const roomsArray = ["Cocina", "Oficina", "Zona de Estacionamiento", "Bodega"];
@@ -28,15 +28,11 @@ let doRandom = (arrSearch) =>
 	Math.round(Math.random() * (arrSearch.length - 1));
 
 let listWithoutAsesin = (numberAssesin) => {
-	alert("numberAssesin", numberAssesin);
-
 	newList = [];
 	suspectsArray.splice(numberAssesin, 1);
 
 	for (element in suspectsArray) {
 		newList[element] = suspectsArray[element];
-
-		console.log(newList[element]);
 	}
 
 	return newList;
@@ -45,14 +41,16 @@ let listWithoutAsesin = (numberAssesin) => {
 let genereMistery = () => {
 	let asessinMuerdered = [];
 
-	let numberAssesin = parseInt(doRandom(suspectsArray));
+	let numberDied = parseInt(doRandom(suspectsArray));
 
-	let numberDied = doRandom(listWithoutAsesin(numberAssesin));
-
-	console.log("numberDied", numberDied);
+	console.log("nnumero muerto", numberDied);
+	let numberAssesin = doRandom(listWithoutAsesin(numberDied));
+	console.log("number asesino", numberAssesin);
 
 	asessinMuerdered.push(numberAssesin);
 	asessinMuerdered.push(numberDied);
+
+	console.log("asessinMuerdered", asessinMuerdered);
 
 	return asessinMuerdered;
 };
@@ -60,19 +58,20 @@ let genereMistery = () => {
 let verifyMistery = (asseMurde) => {
 	console.log("array asesinos", asseMurde[0]);
 
-	dataMurder = [
-		`${suspectsArray[asseMurde[0]].nombre} ${
-			suspectsArray[asseMurde[0]].apellido
-		}`,
-		`${suspectsArray[asseMurde[1]].nombre} ${
-			suspectsArray[asseMurde[1]].apellido
-		}`,
+	dataMurder = ` el asesino fue ${suspectsArray[asseMurde[0]].nombre} ${
+		suspectsArray[asseMurde[0]].apellido
+	}
+		 		 y mato a ${suspectsArray[asseMurde[1]].nombre} ${
+		suspectsArray[asseMurde[1]].apellido
+	}
 
-		weaponsArray[doRandom(weaponsArray)],
-		roomsArray[doRandom(roomsArray)],
-	];
+		 	con ${weaponsArray[doRandom(weaponsArray)]},
+			en ${roomsArray[doRandom(roomsArray)]}	
+		`;
 
 	console.log("dataMurder", dataMurder);
+
+	// alert(`quien fue  ${dataMurder}`);
 
 	return dataMurder;
 };
@@ -84,10 +83,19 @@ let menu = (asseMurde) => {
 
 	let fullCase = verifyMistery(asseMurde);
 
+	console.log("muerto menu", asseMurde[1]);
+	console.log(
+		"muerto menu nombre",
+		suspectsArray[parseInt(asseMurde[1])].nombre
+	);
+
+	for (element in suspectsArray) {
+		console.log(`${element} ${suspectsArray[element].nombre}`);
+	}
 	do {
 		switch (selectUser) {
 			case 0:
-				const OPCION = prompt(
+				let opcion = prompt(
 					`Bienvenido a Clue the Office \n mataron a  ${
 						suspectsArray[parseInt(asseMurde[1])].nombre
 					} es tu deber adivinar en 5 oportunidades, quién lo mato, con que lo mató y donde lo mató\n 
@@ -104,34 +112,43 @@ let menu = (asseMurde) => {
 
 			case 1:
 				const TXT_1 = "Adivina el asesino seleciona su número";
-				let instructions = "";
-				conter = 1;
-
+				let instructions = "",
+					optiAssesin = 0;
+				counter = 1;
 				listOpWiAss = listWithoutAsesin(parseInt(asseMurde[1]));
-
-				alert("listOpWiAss", listOpWiAss);
-
-				debugger;
 
 				for (element in listOpWiAss) {
 					instructions =
 						instructions +
-						`${conter}.- ${listOpWiAss[element].nombre} ${listOpWiAss[element].apellido} \n`;
-					conter++;
+						`${counter}.- ${listOpWiAss[element].nombre} ${listOpWiAss[element].apellido} \n`;
+					counter++;
 				}
 
 				instructions + TXT_1;
 
-				console.log("instructions", instructions);
+				console.log("numero asesino", asseMurde[0]);
+
+				debugger;
 
 				do {
-					const intructions = prompt(
-						` ${instructions}
-					`
-					);
+					let optiAssesin = parseInt(prompt(`${instructions}`));
+					let numberAssesin = parseInt(asseMurde[0]);
+
+					alert(`optiAssesin ${optiAssesin}`);
+					alert(`asseMurde= ${asseMurde[0]}`);
 
 					coins++;
-				} while (coins < 5);
+				} while (optiAssesin != numberAssesin || coins < 5);
+
+				if (optiAssesin === numberAssesin) {
+					alert(`Ganaste fue ${suspectsArray[asseMurde[0]].nombre}`);
+					selectUser = "s";
+				} else {
+					alert(`Perdiste fue ${suspectsArray[asseMurde[0]].nombre}`);
+					selectUser = "s";
+				}
+
+				alert(`selectUser=  ${selectUser}`);
 
 				break;
 			case 2:
@@ -141,8 +158,11 @@ let menu = (asseMurde) => {
 			default:
 				alert("Opción inválida");
 				break;
+
+			case "s":
+				break;
 		}
-	} while (selectUser !== "s" || selectUser !== "S");
+	} while (selectUser !== "s" || selectUser !== "S" || coins != 5);
 };
 
 let main = () => {
@@ -152,14 +172,4 @@ let main = () => {
 
 main();
 
-// genereMistery();
-
-// console.log("->", suspectsArrayz.splice(4, 1));
-
-// let arrz = [];
-
-// for (element in suspectsArrayz) {
-// 	arrz[element] = suspectsArrayz[element];
-// }
-
-// console.log("===>", arrz);
+// console.log(suspectsArray[4].nombre);
